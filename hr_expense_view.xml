@@ -9,10 +9,6 @@
                 <xpath expr="//button[@name='action_get_attachment_view']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
-
-                 <xpath expr="//button[@name='submit_expenses']" position="attributes">
-                        <attribute name="invisible">1</attribute>
-                </xpath>
                 <xpath expr="//field[@name='product_id']"  position="replace">
                     <field name="product_id" required="1" string="Expense Category" options="{'no_create_edit':True, 'no_create':True}"/>
                 </xpath>
@@ -46,7 +42,7 @@
 
 
                 <xpath expr="//field[@name='analytic_account_id']" position="replace">
-                    <field name="analytic_account_id" options="{'no_create_edit':True, 'no_create':True,'no_open':True}" string="Cost Centre" groups="purchase.group_purchase_user,hr_expense.group_hr_expense_manager"/>
+                    <field name="analytic_account_id" options="{'no_create_edit':True, 'no_create':True,'no_open':True}" groups="purchase.group_purchase_user,hr_expense.group_hr_expense_manager"/>
                     <field name="refuse_reason" readonly="1"/>
                     <field name="refuse_details" readonly="1"/>
                 </xpath>
@@ -68,10 +64,6 @@
             <field name="model">hr.expense</field>
             <field name="inherit_id" ref="hr_expense.view_expenses_tree"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='analytic_account_id']"  position="attributes">
-                    <attribute name="string">Cost Centre</attribute>
-                </xpath>
-
                <xpath expr="//field[@name='date']"  position="attributes">
                     <attribute name="string">Bill Date</attribute>
                 </xpath>
@@ -119,12 +111,10 @@
                 </xpath>
                 <xpath expr="//field[@name='journal_id']"  position="after">
                     <field name="physical_received" groups="account.group_account_user"></field>
-                    <field name="c_paathshala"/>
                     <field name="c_phy_received" invisible="1"></field>
                     <field name="c_submit_confirm" invisible="1"/>
                     <field name="c_is_submit" invisible="1"/>
-                  <field name="c_approval_manager" required="1" options='{"no_create_edit":True}' attrs="{'readonly':[('c_paathshala','=',True)]}"/>
-                    <!--<field name="cost_centr" invisible="1"/>-->
+                  <field name="c_approval_manager" required="1" options='{"no_create_edit":True}'/>
                 </xpath>
 
                 <xpath expr="//field[@name='expense_line_ids']"  position="replace">
@@ -148,7 +138,6 @@
                         <field name="refuse_details"/>
                         <field name="c_is_approve" invisible="1"/>
                         <field name="total_amount" sum="Total Amount" widget="monetary"/>
-                        <!--<button name="expense_button" type="object" string="Refuse" attrs="{'invisible':[('c_is_approve','=',False)]}"/>-->
                         <button name="expense_button" type="object" string="Refuse" groups="hr_expense.group_hr_expense_user" attrs="{'invisible':[('state','not in',['draft','reported'])]}"/>
                     </tree>
                         </field>
@@ -161,17 +150,17 @@
             </field>
         </record>
 
-        <record id="nf_view_hr_expense_sheet_filter" model="ir.ui.view">
-            <field name="name">hr.expense.sheet.search</field>
-            <field name="model">hr.expense.sheet</field>
-            <field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_filter"/>
-            <field name="arch" type="xml">
-                <xpath expr="//filter[4]" position="replace">
-                    <filter string="My Team Reports" domain="['|',('employee_id.parent_id.user_id', '=', uid),('employee_id.coach_id.user_id', '=', uid)]" groups="hr_expense.group_hr_expense_manager" help="Expenses of Your Team Member"/>
-                    <filter string="My Approval" name="my_approval" domain="[('c_approval_manager.user_id', '=', uid)]"/>
-                </xpath>
-            </field>
-        </record>
+        <!--<record id="nf_view_hr_expense_sheet_filter" model="ir.ui.view">-->
+            <!--<field name="name">hr.expense.sheet.search</field>-->
+            <!--<field name="model">hr.expense.sheet</field>-->
+            <!--<field name="inherit_id" ref="hr_expense.view_hr_expense_sheet_filter"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<xpath expr="//filter[4]" position="replace">-->
+                    <!--<filter string="My Team Reports" domain="['|',('employee_id.parent_id.user_id', '=', uid),('employee_id.coach_id.user_id', '=', uid)]" groups="hr_expense.group_hr_expense_manager" help="Expenses of Your Team Member"/>-->
+                    <!--<filter string="My Approval" name="my_approval" domain="[('c_approval_manager.user_id', '=', uid)]"/>-->
+                <!--</xpath>-->
+            <!--</field>-->
+        <!--</record>-->
 
 
     </data>

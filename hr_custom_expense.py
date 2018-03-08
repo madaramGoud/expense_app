@@ -10,7 +10,7 @@ class ouc_expense_custom(models.Model):
     _inherit = 'hr.expense'
 
 
-    analytic_account_id = fields.Many2one('account.analytic.account', string='Cost Centre',
+    analytic_account_id = fields.Many2one('account.analytic.account',
             states={'post': [('readonly', True)], 'done': [('readonly', True)]},
             oldname='analytic_account')
     account_id = fields.Many2one('account.account', string='Account',
@@ -37,7 +37,6 @@ class ouc_expense_custom(models.Model):
 
     def expense_button(self):
         if not self.refuse_reason:
-            print ">>>>>>>>>>>>>>>>>>>",self.refuse_reason
             raise exceptions.ValidationError(_('Mention Refuse Reason'))
         else:
             self.sudo().message_post(_("Your Expense %s has been refused.<br/><ul class=o_timeline_tracking_value_list><li>Reason<span> : </span><span class=o_timeline_tracking_value>%s</span></li></ul>") %(self.name,self.refuse_reason))
@@ -74,20 +73,10 @@ class ouc_expense_sheet(models.Model):
 
     physical_received=fields.Boolean(string="Physical Received All",related="c_phy_received")
 
-    # cost_centr = fields.Many2one('account.analytic.account', 'Cost Centre')
-    c_paathshala = fields.Boolean(string='Is a Paathshala Expense ')
-
-    # @api.onchange('employee_id')
-    # def onchange_employee(self):
-    #     if self.employee_id:
-    #         self.cost_centr = self.employee_id.cost_centr.id
-
     @api.model
     def create(self, create_values):
         seq = self.env['ir.sequence'].next_by_code('expensesequence')
         create_values["c_seq_number"] = seq
-        # if create_values["c_paathshala"]:
-        #   create_values.update({'c_approval_manager':self.env['hr.employee'].browse(7401).id})
         res = super(ouc_expense_sheet, self).create(create_values)
         return res
 
@@ -97,9 +86,8 @@ class ouc_expense_sheet(models.Model):
         self.env['mail.template'].browse(template.id).send_mail(self.id)
         template = self.env['ir.model.data'].get_object('nf_hr_custom', 'example_email_template_id')
         self.env['mail.template'].browse(template.id).send_mail(self.id)
-        if self.c_paathshala == False:
-             template = self.env['ir.model.data'].get_object('nf_hr_custom', 'example_email_template_id5')
-             self.env['mail.template'].browse(template.id).send_mail(self.id)
+        template = self.env['ir.model.data'].get_object('nf_hr_custom', 'example_email_template_id5')
+        self.env['mail.template'].browse(template.id).send_mail(self.id)
         self.c_is_submit=True
 
     @api.depends('c_phy_received')
@@ -162,12 +150,6 @@ class ouc_expense_sheet(models.Model):
         else:
             for val in self.expense_line_ids:
                 val.received_true= False
-
-    # @api.onchange('c_paathshala')
-    # def approve_self(self):
-    #     if self.c_paathshala == True:
-    #         a = self.env['hr.employee'].browse(7401)
-    #         self.c_approval_manager = a.id
 
     @api.onchange('c_approval_manager')
     def approve_manage(self):
