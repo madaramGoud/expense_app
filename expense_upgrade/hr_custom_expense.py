@@ -73,15 +73,12 @@ class ouc_expense_sheet(models.Model):
 
     physical_received=fields.Boolean(string="Physical Received All",related="c_phy_received")
 
-<<<<<<< HEAD:expense_upgrade/hr_custom_expense.py
-=======
 
     # @api.onchange('employee_id')
     # def onchange_employee(self):
     #     if self.employee_id:
     #         self.cost_centr = self.employee_id.cost_centr.id
 
->>>>>>> e43f6dc2f2f632ba2d0ef22aff642abf31978ec1:hr_custom_expense.py
     @api.model
     def create(self, create_values):
         seq = self.env['ir.sequence'].next_by_code('expensesequence')
@@ -91,11 +88,11 @@ class ouc_expense_sheet(models.Model):
 
     def save_button(self):
 
-        template = self.env['ir.model.data'].get_object('nf_hr_custom', 'example_email_template_id2')
+        template = self.env['ir.model.data'].get_object('expense_upgrade', 'example_email_template_id2')
         self.env['mail.template'].browse(template.id).send_mail(self.id)
-        template = self.env['ir.model.data'].get_object('nf_hr_custom', 'example_email_template_id')
+        template = self.env['ir.model.data'].get_object('expense_upgrade', 'example_email_template_id')
         self.env['mail.template'].browse(template.id).send_mail(self.id)
-        template = self.env['ir.model.data'].get_object('nf_hr_custom', 'example_email_template_id5')
+        template = self.env['ir.model.data'].get_object('expense_upgrade', 'example_email_template_id5')
         self.env['mail.template'].browse(template.id).send_mail(self.id)
         self.c_is_submit=True
 
@@ -129,7 +126,7 @@ class ouc_expense_sheet(models.Model):
         res = super(ouc_expense_sheet, self).action_sheet_move_create()
         if not self.accounting_date:
             self.accounting_date = datetime.date.today()
-        template = self.env['ir.model.data'].get_object('nf_hr_custom', 'example_email_template_id3')
+        template = self.env['ir.model.data'].get_object('expense_upgrade', 'example_email_template_id3')
         self.env['mail.template'].browse(template.id).send_mail(self.id)
         return res
 
@@ -138,7 +135,7 @@ class ouc_expense_sheet(models.Model):
         self.write({'state': 'approve', 'responsible_id': self.env.user.id})
         user = self.env.uid
         if self.c_approval_manager.user_id.id == user:
-              template = self.env['ir.model.data'].get_object('nf_hr_custom', 'example_email_template_id1')
+              template = self.env['ir.model.data'].get_object('expense_upgrade', 'example_email_template_id1')
               self.env['mail.template'].browse(template.id).send_mail(self.id)
         else:
              raise exceptions.ValidationError(_('Your are not the Approval Manager for this Request'))
@@ -146,7 +143,7 @@ class ouc_expense_sheet(models.Model):
     @api.multi
     def  payment_send_mail(self):
         if self.state == 'done':
-            template = self.env['ir.model.data'].get_object('nf_hr_custom', 'example_email_template_id4')
+            template = self.env['ir.model.data'].get_object('expense_upgrade', 'example_email_template_id4')
             self.env['mail.template'].browse(template.id).send_mail(self.id)
             self.c_submit_confirm=True
 
