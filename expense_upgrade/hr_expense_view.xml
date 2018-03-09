@@ -64,10 +64,6 @@
             <field name="model">hr.expense</field>
             <field name="inherit_id" ref="hr_expense.view_expenses_tree"/>
             <field name="arch" type="xml">
-<<<<<<< HEAD:expense_upgrade/hr_expense_view.xml
-=======
-
->>>>>>> e43f6dc2f2f632ba2d0ef22aff642abf31978ec1:hr_expense_view.xml
                <xpath expr="//field[@name='date']"  position="attributes">
                     <attribute name="string">Bill Date</attribute>
                 </xpath>
@@ -154,7 +150,6 @@
             </field>
         </record>
 
-<<<<<<< HEAD:expense_upgrade/hr_expense_view.xml
         <!--<record id="nf_view_hr_expense_sheet_filter" model="ir.ui.view">-->
             <!--<field name="name">hr.expense.sheet.search</field>-->
             <!--<field name="model">hr.expense.sheet</field>-->
@@ -166,8 +161,7 @@
                 <!--</xpath>-->
             <!--</field>-->
         <!--</record>-->
-=======
->>>>>>> e43f6dc2f2f632ba2d0ef22aff642abf31978ec1:hr_expense_view.xml
+
 
 
     </data>
