@@ -1,0 +1,4 @@
+[submodule "OCA/odoo"]
+	path = OCA/odoo
+	url = git@github.com:OCA/odoo.git
+	branch = 10.0
